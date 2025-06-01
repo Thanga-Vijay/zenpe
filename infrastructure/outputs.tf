@@ -4,7 +4,7 @@ output "api_gateway_url" {
 }
 
 output "domain_name" {
-  description = "Domain name of the application"
+  description = "Domain name of the applications"
   value       = var.domain_name != "" ? var.domain_name : null
 }
 
