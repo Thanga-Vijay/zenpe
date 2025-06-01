@@ -41,3 +41,14 @@ variable "geo_restriction_countries" {
   type        = list(string)
   default     = []
 }
+
+variable "admin_whitelisted_ips" {
+  description = "List of IPs whitelisted for admin access"
+  type        = list(string)
+  default     = []
+}
+
+variable "kyc_service_security_group_id" {
+  description = "Security group ID for the KYC service"
+  type        = string
+}

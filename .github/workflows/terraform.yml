@@ -1,0 +1,46 @@
+# c:\Users\ADMIN\Documents\APP\Continue\Backend\.github\workflows\terraform.yml
+name: Terraform Infrastructure Pipeline
+
+on:
+  push:
+    paths:
+      - 'infrastructure/**'
+  # pull_request:
+  #   paths:
+  #     - 'infrastructure/**'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: ap-south-1   # Change to your AWS region
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials using OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
+          role-session-name: github-oidc
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform -chdir=infrastructure init
+
+      - name: Terraform Plan
+        run: terraform -chdir=infrastructure plan
+
+      # Only apply on main branch
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main'
+        run: terraform -chdir=infrastructure apply -auto-approve

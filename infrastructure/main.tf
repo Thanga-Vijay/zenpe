@@ -355,14 +355,26 @@ module "admin_service" {
 # S3 Bucket for KYC Documents
 resource "aws_s3_bucket" "kyc_documents" {
   bucket = "${var.app_name}-kyc-documents-${var.environment}"
-  acl    = "private"
 
-  versioning {
-    enabled = true
+  tags = {
+    Name        = "${var.app_name}-kyc-documents"
+    Environment = var.environment
   }
+}
 
-  lifecycle_rule {
-    enabled = true
+resource "aws_s3_bucket_versioning" "kyc_documents" {
+  bucket = aws_s3_bucket.kyc_documents.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "kyc_documents" {
+  bucket = aws_s3_bucket.kyc_documents.id
+
+  rule {
+    id     = "glacier-transition"
+    status = "Enabled"
 
     transition {
       days          = 30
@@ -370,22 +382,9 @@ resource "aws_s3_bucket" "kyc_documents" {
     }
 
     transition {
-      days          = var.document_retention_days
+      days          = var.kyc_document_retention_days
       storage_class = "GLACIER"
     }
-  }
-
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
-  
-  tags = {
-    Name        = "${var.app_name}-kyc-documents"
-    Environment = var.environment
   }
 }
 
