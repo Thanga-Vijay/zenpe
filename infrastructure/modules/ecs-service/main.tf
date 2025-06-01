@@ -181,21 +181,7 @@ resource "aws_appautoscaling_policy" "memory" {
   }
 }
 
-# Add environment variables for KYC service
-environment = [
-  {
-    name  = "SESSION_TIMEOUT_MINUTES"
-    value = var.session_timeout_minutes
-  },
-  {
-    name  = "DOCUMENT_RETENTION_DAYS"
-    value = var.kyc_document_retention_days
-  },
-  {
-    name  = "ADMIN_WHITELISTED_IPS"
-    value = join(",", var.admin_whitelisted_ips)
-  }
-]
+# Add environment variables for KYC service here if needed, following the supported aws_ecs_task_definition format.
 
 # Enhanced security group rules
 resource "aws_security_group_rule" "kyc_service_email" {
