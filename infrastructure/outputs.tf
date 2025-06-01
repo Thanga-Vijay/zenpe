@@ -18,10 +18,10 @@ output "database_endpoint" {
   value       = module.database.endpoint
 }
 
-output "redis_endpoint" {
-  description = "Endpoint of the Redis cluster"
-  value       = module.redis.endpoint
-}
+# output "redis_endpoint" {
+#   description = "Endpoint of the Redis cluster"
+#   value       = module.redis.endpoint
+# }
 
 output "ecs_cluster_name" {
   description = "Name of the ECS cluster"

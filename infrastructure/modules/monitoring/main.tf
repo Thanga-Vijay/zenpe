@@ -360,28 +360,28 @@ resource "aws_sns_topic" "alarms" {
 }
 
 # Lambda function for sending alarm notifications to Slack (optional)
-resource "aws_lambda_function" "slack_notification" {
-  count = var.enable_slack_notifications ? 1 : 0
+# resource "aws_lambda_function" "slack_notification" {
+#   count = var.enable_slack_notifications ? 1 : 0
   
-  function_name    = "${var.app_name}-slack-notification-${var.environment}"
-  role             = aws_iam_role.lambda_execution_role[0].arn
-  handler          = "index.handler"
-  runtime          = "nodejs14.x"
-  filename         = "${path.module}/lambda/slack-notification.zip"
-  source_code_hash = filebase64sha256("${path.module}/lambda/slack-notification.zip")
+#   function_name    = "${var.app_name}-slack-notification-${var.environment}"
+#   role             = aws_iam_role.lambda_execution_role[0].arn
+#   handler          = "index.handler"
+#   runtime          = "nodejs14.x"
+#   filename         = "${path.module}/lambda/slack-notification.zip"
+#   source_code_hash = filebase64sha256("${path.module}/lambda/slack-notification.zip")
   
-  environment {
-    variables = {
-      SLACK_WEBHOOK_URL = var.slack_webhook_url
-      SLACK_CHANNEL     = var.slack_channel
-    }
-  }
+#   environment {
+#     variables = {
+#       SLACK_WEBHOOK_URL = var.slack_webhook_url
+#       SLACK_CHANNEL     = var.slack_channel
+#     }
+#   }
   
-  tags = {
-    Name        = "${var.app_name}-slack-notification"
-    Environment = var.environment
-  }
-}
+#   tags = {
+#     Name        = "${var.app_name}-slack-notification"
+#     Environment = var.environment
+#   }
+# }
 
 # IAM Role for Lambda function
 resource "aws_iam_role" "lambda_execution_role" {
