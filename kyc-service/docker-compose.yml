@@ -1,0 +1,38 @@
+﻿version: '3.8'
+
+services:
+  api:
+    build: .
+    ports:
+      - "8002:8002"
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/kyc_service
+      - AWS_REGION=us-east-1
+      - AWS_S3_BUCKET=kyc-documents-bucket
+      - JWT_SECRET_KEY=your_development_jwt_secret
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+      - ./uploads:/app/uploads
+    networks:
+      - app-network
+
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=kyc_service
+    ports:
+      - "5434:5432"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+
+volumes:
+  postgres_data:
