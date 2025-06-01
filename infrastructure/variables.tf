@@ -283,8 +283,5 @@ variable "kyc_backup_retention_days" {
   default     = 365  # Adjust based on your compliance requirements
 }
 
-variable "sns_topic_arn" {
-  description = "The ARN of the SNS topic for alarm actions"
-  type        = string
-}
+
 
