@@ -12,7 +12,7 @@ resource "aws_shield_protection" "alb" {
 }
 
 resource "aws_shield_protection" "api_gateway" {
-  count = var.enable_shield_advanced && var.api_gateway_arn != "" ? 1 : 0
+  count = var.enable_shield_advanced && var.enable_api_gateway_protection ? 1 : 0
   
   name         = "${var.app_name}-api-gateway-protection-${var.environment}"
   resource_arn = var.api_gateway_arn
@@ -147,7 +147,7 @@ resource "aws_wafv2_web_acl_association" "alb" {
 
 # Associate WAF with API Gateway (if provided)
 resource "aws_wafv2_web_acl_association" "api_gateway" {
-  count = var.api_gateway_arn != "" ? 1 : 0
+  count = var.enable_api_gateway_protection ? 1 : 0
   
   resource_arn = var.api_gateway_arn
   web_acl_arn  = aws_wafv2_web_acl.main.arn

@@ -48,6 +48,12 @@ variable "admin_whitelisted_ips" {
   default     = []
 }
 
+variable "enable_api_gateway_protection" {
+  description = "Whether to protect API Gateway with WAF and Shield"
+  type        = bool
+  default     = false
+}
+
 variable "kyc_service_security_group_id" {
   description = "Security group ID for the KYC service"
   type        = string

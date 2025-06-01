@@ -386,22 +386,19 @@ resource "aws_sns_topic" "alarms" {
 # IAM Role for Lambda function
 resource "aws_iam_role" "lambda_execution_role" {
   count = var.enable_slack_notifications ? 1 : 0
-  
-  name = "${var.app_name}-lambda-execution-role-${var.environment}"
-  
+  name  = "${var.app_name}-lambda-execution-role-${var.environment}"
   assume_role_policy = jsonencode({
-    Version = "2012-10-17"
+    Version = "2012-10-17",
     Statement = [
       {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
+        Effect = "Allow",
         Principal = {
           Service = "lambda.amazonaws.com"
-        }
+        },
+        Action = "sts:AssumeRole"
       }
     ]
   })
-  
   tags = {
     Name        = "${var.app_name}-lambda-execution-role"
     Environment = var.environment
