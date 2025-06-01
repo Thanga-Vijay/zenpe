@@ -1,5 +1,5 @@
 # c:\Users\ADMIN\Documents\APP\Continue\Backend\.github\workflows\terraform.yml
-name: Terraform Infrastructure Pipeline
+name: Terraform Infrastructure Pipeline.
 
 on:
   push:
