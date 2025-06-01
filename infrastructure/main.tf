@@ -164,11 +164,12 @@ module "monitoring" {
   ecs_services      = local.ecs_services
   alb_name          = module.api_gateway.alb_dns_name
   rds_cluster_id    = module.database.cluster_id
-  alarm_actions     = [module.monitoring.alarm_topic_arn]
-  ok_actions        = [module.monitoring.alarm_topic_arn]
-  enable_slack_notifications = var.enable_slack_notifications
-  slack_webhook_url = var.slack_webhook_url
-  slack_channel     = var.slack_channel
+  alarm_actions     = [aws_sns_topic.notifications.arn]
+  ok_actions        = [aws_sns_topic.notifications.arn]
+  sns_topic_arn     = aws_sns_topic.notifications.arn
+  enable_slack_notifications = false
+  slack_webhook_url = ""
+  slack_channel     = ""
   alarm_email_addresses = var.alarm_email_addresses
 }
 
