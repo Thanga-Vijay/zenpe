@@ -440,13 +440,13 @@ resource "aws_iam_role_policy_attachment" "lambda_execution_policy_attachment" {
 }
 
 # SNS subscription for Lambda
-resource "aws_sns_topic_subscription" "lambda_subscription" {
-  count = var.enable_slack_notifications ? 1 : 0
-  
-  topic_arn = aws_sns_topic.alarms.arn
-  protocol  = "lambda"
-  endpoint  = aws_lambda_function.slack_notification[0].arn
-}
+# resource "aws_sns_topic_subscription" "lambda_subscription" {
+#   count = var.enable_slack_notifications ? 1 : 0
+#   
+#   topic_arn = aws_sns_topic.alarms.arn
+#   protocol  = "lambda"
+#   endpoint  = aws_lambda_function.slack_notification[0].arn
+# }
 
 # SNS subscription for Email
 resource "aws_sns_topic_subscription" "email_subscription" {
