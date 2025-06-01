@@ -22,7 +22,7 @@ output "alarm_topic_name" {
   value       = aws_sns_topic.alarms.name
 }
 
-output "lambda_function_arn" {
-  description = "ARN of the Lambda function for Slack notifications"
-  value       = var.enable_slack_notifications ? aws_lambda_function.slack_notification[0].arn : null
-}
+# output "lambda_function_arn" {
+#   description = "ARN of the Lambda function for Slack notifications"
+#   value       = var.enable_slack_notifications ? aws_lambda_function.slack_notification[0].arn : null
+# }
