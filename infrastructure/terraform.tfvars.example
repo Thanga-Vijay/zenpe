@@ -2,14 +2,14 @@
 app_name = "rupay-upi"
 environment = "dev"
 aws_region = "ap-south-1"
-aws_account_id = "123456789012"
+aws_account_id = "982534373229"
 
 # Database
 db_master_username = "postgres"
-db_master_password = "your-secure-password-here"
+db_master_password = "Password1233344"
 
 # ECR
-ecr_repository_url = "123456789012.dkr.ecr.ap-south-1.amazonaws.com"
+ecr_repository_url = "982534373229.dkr.ecr.ap-south-1.amazonaws.com"
 
 # Third-party services
 razorpay_key_id = "your-razorpay-key-id"
