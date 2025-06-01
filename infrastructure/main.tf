@@ -136,7 +136,7 @@ module "api_gateway" {
 # Security (WAF, Shield, GuardDuty)
 module "security" {
   source = "./modules/security"
-  
+
   app_name      = var.app_name
   environment   = var.environment
   vpc_id        = module.vpc.vpc_id
@@ -145,6 +145,9 @@ module "security" {
   enable_shield_advanced = var.enable_shield_advanced
   enable_guardduty = var.enable_guardduty
   geo_restriction_countries = var.geo_restriction_countries
+
+  admin_whitelisted_ips         = var.admin_whitelisted_ips
+  kyc_service_security_group_id = module.ecs.kyc_service_security_group_id  # <-- Replace appropriately
 }
 
 # Monitoring (CloudWatch)
@@ -350,6 +353,9 @@ module "admin_service" {
     { name = "SMTP_USERNAME", valueFrom = "${aws_secretsmanager_secret.service_credentials.arn}:smtp.username::" },
     { name = "SMTP_PASSWORD", valueFrom = "${aws_secretsmanager_secret.service_credentials.arn}:smtp.password::" }
   ]
+
+  admin_whitelisted_ips         = var.admin_whitelisted_ips
+  kyc_service_security_group_id = module.ecs-service.kyc_service_security_group_id
 }
 
 # S3 Bucket for KYC Documents

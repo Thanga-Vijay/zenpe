@@ -80,15 +80,15 @@ variable "redis_engine_version" {
 }
 
 # MSG91 Variables
-variable "msg91_auth_key" {
-  description = "MSG91 Auth Key"
-  sensitive   = true
-}
+# variable "msg91_auth_key" {
+#   description = "MSG91 Auth Key"
+#   sensitive   = true
+# }
 
-variable "msg91_template_id" {
-  description = "MSG91 Template ID"
-  sensitive   = true
-}
+# variable "msg91_template_id" {
+#   description = "MSG91 Template ID"
+#   sensitive   = true
+# }
 # ECS Service Variables
 variable "service_desired_count" {
   description = "Desired count of containers for each service"

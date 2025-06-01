@@ -189,7 +189,7 @@ environment = [
   },
   {
     name  = "DOCUMENT_RETENTION_DAYS"
-    value = var.document_retention_days
+    value = var.kyc_document_retention_days
   },
   {
     name  = "ADMIN_WHITELISTED_IPS"
