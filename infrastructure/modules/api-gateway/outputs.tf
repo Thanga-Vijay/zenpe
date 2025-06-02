@@ -38,7 +38,12 @@ output "vpc_link_id" {
   value       = aws_apigatewayv2_vpc_link.main.id
 }
 
+output "alb_arn" {
+  description = "ARN of the Application Load Balancer"
+  value       = aws_lb.main.arn
+}
+
 output "https_listener_arn" {
   description = "ARN of the HTTPS listener for the ALB"
-  value       = aws_lb_listener.https[0].arn
+  value       = length(aws_lb_listener.https) > 0 ? aws_lb_listener.https[0].arn : ""
 }

@@ -140,7 +140,7 @@ module "security" {
   app_name      = var.app_name
   environment   = var.environment
   vpc_id        = module.vpc.vpc_id
-  alb_arn       = module.api_gateway.alb_dns_name
+  alb_arn       = module.api_gateway.alb_arn
   api_gateway_arn = module.api_gateway.api_id
   enable_shield_advanced = var.enable_shield_advanced
   enable_guardduty = var.enable_guardduty
