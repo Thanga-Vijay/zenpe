@@ -195,7 +195,8 @@ resource "aws_security_group_rule" "kyc_admin_whitelist" {
   description       = "KYC Admin Access"
 
   depends_on = [
-    aws_security_group.common
+    aws_security_group.common,
+    aws_security_group.kyc
   ]
 }
 

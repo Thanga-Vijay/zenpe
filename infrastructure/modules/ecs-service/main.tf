@@ -92,7 +92,7 @@ resource "aws_lb_target_group" "service" {
 }
 
 resource "aws_lb_listener_rule" "service" {
-  listener_arn = var.alb_listener_arn
+  listener_arn = var.alb_listener_arn != "" ? var.alb_listener_arn : null
   priority     = var.listener_priority
   
   action {

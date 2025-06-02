@@ -97,37 +97,37 @@ module "api_gateway" {
   integrations = [
     {
       name       = "user-service"
-      target_url = module.user_service.target_group_arn
+      target_url = module.api_gateway.https_listener_arn != "" ? module.api_gateway.https_listener_arn : module.user_service.target_group_arn
       base_path  = "users"
     },
     {
       name       = "otp-service"
-      target_url = module.otp_service.target_group_arn
+      target_url = module.api_gateway.https_listener_arn != "" ? module.api_gateway.https_listener_arn : module.otp_service.target_group_arn
       base_path  = "otp"
     },
     {
       name       = "kyc-service"
-      target_url = module.kyc_service.target_group_arn
+      target_url = module.api_gateway.https_listener_arn != "" ? module.api_gateway.https_listener_arn : module.kyc_service.target_group_arn
       base_path  = "kyc"
     },
     {
       name       = "payment-service"
-      target_url = module.payment_service.target_group_arn
+      target_url = module.api_gateway.https_listener_arn != "" ? module.api_gateway.https_listener_arn : module.payment_service.target_group_arn
       base_path  = "payments"
     },
     {
       name       = "settlement-service"
-      target_url = module.payment_service.target_group_arn
+      target_url = module.api_gateway.https_listener_arn != "" ? module.api_gateway.https_listener_arn : module.payment_service.target_group_arn
       base_path  = "settlements"
     },
     {
       name       = "admin-service"
-      target_url = module.admin_service.target_group_arn
+      target_url = module.api_gateway.https_listener_arn != "" ? module.api_gateway.https_listener_arn : module.admin_service.target_group_arn
       base_path  = "admin"
     },
     {
       name       = "notifications-service"
-      target_url = module.admin_service.target_group_arn
+      target_url = module.api_gateway.https_listener_arn != "" ? module.api_gateway.https_listener_arn : module.admin_service.target_group_arn
       base_path  = "notifications"
     }
   ]
