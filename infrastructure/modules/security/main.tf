@@ -193,5 +193,9 @@ resource "aws_security_group_rule" "kyc_admin_whitelist" {
   cidr_blocks       = var.admin_whitelisted_ips
   security_group_id = var.kyc_service_security_group_id
   description       = "KYC Admin Access"
+
+  depends_on = [
+    aws_security_group.common
+  ]
 }
 

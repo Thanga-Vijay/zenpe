@@ -38,7 +38,7 @@ output "vpc_link_id" {
   value       = aws_apigatewayv2_vpc_link.main.id
 }
 
-output "https_listener_arn" {
-  description = "ARN of the HTTPS listener for the ALB"
-  value       = aws_lb_listener.https[0].arn
-}
+# output "https_listener_arn" {
+#   description = "ARN of the HTTPS listener for the ALB"
+#   value       = aws_lb_listener.https[0].arn
+# }

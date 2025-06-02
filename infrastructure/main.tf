@@ -225,7 +225,7 @@ module "otp_service" {
   task_execution_role_arn = module.iam.ecs_task_execution_role_arn
   task_role_arn     = module.iam.ecs_task_role_arn
   alb_security_group_id = module.api_gateway.alb_security_group_id
-  alb_listener_arn  = module.api_gateway.api_id
+  alb_listener_arn  = module.api_gateway.https_listener_arn
   listener_priority = 110
   path_pattern      = "otp"
   health_check_path = "/health"
@@ -264,7 +264,7 @@ module "kyc_service" {
   task_execution_role_arn = module.iam.ecs_task_execution_role_arn
   task_role_arn     = module.iam.ecs_task_role_arn
   alb_security_group_id = module.api_gateway.alb_security_group_id
-  alb_listener_arn  = module.api_gateway.api_id
+  alb_listener_arn  = module.api_gateway.https_listener_arn
   listener_priority = 120
   path_pattern      = "kyc"
   health_check_path = "/health"
@@ -299,7 +299,7 @@ module "payment_service" {
   task_execution_role_arn = module.iam.ecs_task_execution_role_arn
   task_role_arn     = module.iam.ecs_task_role_arn
   alb_security_group_id = module.api_gateway.alb_security_group_id
-  alb_listener_arn  = module.api_gateway.api_id
+  alb_listener_arn  = module.api_gateway.https_listener_arn
   listener_priority = 130
   path_pattern      = "payments"
   health_check_path = "/health"
@@ -337,7 +337,7 @@ module "admin_service" {
   task_execution_role_arn = module.iam.ecs_task_execution_role_arn
   task_role_arn     = module.iam.ecs_task_role_arn
   alb_security_group_id = module.api_gateway.alb_security_group_id
-  alb_listener_arn  = module.api_gateway.api_id
+  alb_listener_arn  = module.api_gateway.https_listener_arn
   listener_priority = 140
   path_pattern      = "admin"
   health_check_path = "/health"
