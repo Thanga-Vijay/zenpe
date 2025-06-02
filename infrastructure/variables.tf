@@ -68,17 +68,6 @@ variable "db_engine_version" {
   default     = "13.7"
 }
 
-# Redis Variables
-variable "redis_node_type" {
-  description = "Node type for Redis"
-  default     = "cache.t3.small"
-}
-
-variable "redis_engine_version" {
-  description = "Redis engine version"
-  default     = "6.x"
-}
-
 # MSG91 Variables
 # variable "msg91_auth_key" {
 #   description = "MSG91 Auth Key"

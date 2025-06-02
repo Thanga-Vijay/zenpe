@@ -292,55 +292,55 @@ resource "aws_cloudwatch_dashboard" "main" {
       },
       {
         type   = "metric"
-        x      = 0
-        y      = 13
-        width  = 12
-        height = 6
+        x      = 0,
+        y      = 13,
+        width  = 12,
+        height = 6,
         properties = {
           metrics = [
             ["AWS/RDS", "CPUUtilization", "DBClusterIdentifier", var.rds_cluster_id]
-          ]
-          view    = "timeSeries"
-          stacked = false
-          title   = "RDS CPU Utilization"
-          region  = var.aws_region
+          ],
+          view    = "timeSeries",
+          stacked = false,
+          title   = "RDS CPU Utilization",
+          region  = var.aws_region,
           period  = 300
         }
       },
       {
-        type   = "metric"
-        x      = 12
-        y      = 13
-        width  = 12
-        height = 6
+        type   = "metric",
+        x      = 12,
+        y      = 13,
+        width  = 12,
+        height = 6,
         properties = {
           metrics = [
             ["AWS/RDS", "DatabaseConnections", "DBClusterIdentifier", var.rds_cluster_id]
-          ]
-          view    = "timeSeries"
-          stacked = false
-          title   = "RDS Database Connections"
-          region  = var.aws_region
+          ],
+          view    = "timeSeries",
+          stacked = false,
+          title   = "RDS Database Connections",
+          region  = var.aws_region,
           period  = 300
         }
       },
       {
-        type   = "metric"
-        x      = 0
-        y      = 19
-        width  = 24
-        height = 6
+        type   = "metric",
+        x      = 0,
+        y      = 19,
+        width  = 24,
+        height = 6,
         properties = {
-          metrics = []
-          view    = "timeSeries"
-          stacked = false
-          title   = "ECS CPU Utilization by Service"
-          region  = var.aws_region
-          period  = 300
+          metrics = [],
+          view    = "timeSeries",
+          stacked = false,
+          title   = "ECS CPU Utilization by Service",
+          region  = var.aws_region,
+          period  = 300,
           yAxis = {
             left = {
-              min = 0
-              max = 100
+              min = 0,
+              max = 100,
             }
           }
         }
@@ -408,20 +408,18 @@ resource "aws_iam_role" "lambda_execution_role" {
 # IAM Policy for Lambda function
 resource "aws_iam_policy" "lambda_execution_policy" {
   count = var.enable_slack_notifications ? 1 : 0
-  
   name        = "${var.app_name}-lambda-execution-policy-${var.environment}"
   description = "Policy for ${var.app_name} Lambda function"
-  
   policy = jsonencode({
-    Version = "2012-10-17"
+    Version = "2012-10-17",
     Statement = [
       {
         Action = [
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
           "logs:PutLogEvents"
-        ]
-        Effect   = "Allow"
+        ],
+        Effect   = "Allow",
         Resource = "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:*"
       }
     ]
@@ -431,7 +429,6 @@ resource "aws_iam_policy" "lambda_execution_policy" {
 # Attach policy to role
 resource "aws_iam_role_policy_attachment" "lambda_execution_policy_attachment" {
   count = var.enable_slack_notifications ? 1 : 0
-  
   role       = aws_iam_role.lambda_execution_role[0].name
   policy_arn = aws_iam_policy.lambda_execution_policy[0].arn
 }
@@ -439,7 +436,6 @@ resource "aws_iam_role_policy_attachment" "lambda_execution_policy_attachment" {
 # SNS subscription for Lambda
 # resource "aws_sns_topic_subscription" "lambda_subscription" {
 #   count = var.enable_slack_notifications ? 1 : 0
-#   
 #   topic_arn = aws_sns_topic.alarms.arn
 #   protocol  = "lambda"
 #   endpoint  = aws_lambda_function.slack_notification[0].arn
@@ -448,7 +444,6 @@ resource "aws_iam_role_policy_attachment" "lambda_execution_policy_attachment" {
 # SNS subscription for Email
 resource "aws_sns_topic_subscription" "email_subscription" {
   count = length(var.alarm_email_addresses) > 0 ? length(var.alarm_email_addresses) : 0
-  
   topic_arn = aws_sns_topic.alarms.arn
   protocol  = "email"
   endpoint  = var.alarm_email_addresses[count.index]
@@ -459,7 +454,6 @@ resource "aws_cloudwatch_log_metric_filter" "error_logs" {
   name           = "${var.app_name}-error-logs-${var.environment}"
   pattern        = "ERROR"
   log_group_name = aws_cloudwatch_log_group.ecs.name
-  
   metric_transformation {
     name      = "${var.app_name}-error-count"
     namespace = "LogMetrics"
@@ -478,10 +472,8 @@ resource "aws_cloudwatch_metric_alarm" "error_logs_alarm" {
   statistic           = "Sum"
   threshold           = 10
   alarm_description   = "Number of error logs is too high"
-  
   alarm_actions = var.alarm_actions
   ok_actions    = var.ok_actions
-  
   tags = {
     Name        = "${var.app_name}-error-logs"
     Environment = var.environment

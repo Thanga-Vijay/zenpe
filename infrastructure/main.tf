@@ -97,37 +97,37 @@ module "api_gateway" {
   integrations = [
     {
       name       = "user-service"
-      target_url = module.user_service.service_url
+      target_url = module.user_service.target_group_arn
       base_path  = "users"
     },
     {
       name       = "otp-service"
-      target_url = module.otp_service.service_url
+      target_url = module.otp_service.target_group_arn
       base_path  = "otp"
     },
     {
       name       = "kyc-service"
-      target_url = module.kyc_service.service_url
+      target_url = module.kyc_service.target_group_arn
       base_path  = "kyc"
     },
     {
       name       = "payment-service"
-      target_url = module.payment_service.service_url
+      target_url = module.payment_service.target_group_arn
       base_path  = "payments"
     },
     {
       name       = "settlement-service"
-      target_url = module.payment_service.service_url
+      target_url = module.payment_service.target_group_arn
       base_path  = "settlements"
     },
     {
       name       = "admin-service"
-      target_url = module.admin_service.service_url
+      target_url = module.admin_service.target_group_arn
       base_path  = "admin"
     },
     {
       name       = "notifications-service"
-      target_url = module.admin_service.service_url
+      target_url = module.admin_service.target_group_arn
       base_path  = "notifications"
     }
   ]
@@ -191,7 +191,7 @@ module "user_service" {
   task_execution_role_arn = module.iam.ecs_task_execution_role_arn
   task_role_arn     = module.iam.ecs_task_role_arn
   alb_security_group_id = module.api_gateway.alb_security_group_id
-  alb_listener_arn  = module.api_gateway.api_id
+  alb_listener_arn  = module.api_gateway.https_listener_arn
   listener_priority = 100
   path_pattern      = "users"
   health_check_path = "/health"

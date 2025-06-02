@@ -39,7 +39,7 @@ variable "instance_count" {
 variable "engine_version" {
   description = "Aurora PostgreSQL engine version"
   type        = string
-  default     = "13.7"
+  default     = "13.6"
 }
 
 variable "database_name" {

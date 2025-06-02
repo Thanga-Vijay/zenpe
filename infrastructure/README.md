@@ -13,7 +13,6 @@ The infrastructure includes:
 - **VPC and Networking**: Private and public subnets across multiple AZs
 - **IAM**: Roles and policies for secure access
 - **Database**: Aurora PostgreSQL for data storage
-- **Redis**: ElastiCache for caching and OTP storage
 - **ECS**: Fargate clusters for running containerized microservices
 - **API Gateway**: HTTP API for frontend access
 - **Security**: WAF, Shield, and GuardDuty for protection
@@ -27,7 +26,6 @@ The infrastructure includes:
 - **vpc**: Network infrastructure
 - **iam**: Identity and access management
 - **database**: Aurora PostgreSQL database
-- **redis**: ElastiCache Redis cluster
 - **ecs**: ECS cluster and task definitions
 - **ecs-service**: Individual ECS services
 - **api-gateway**: API Gateway for frontend access
