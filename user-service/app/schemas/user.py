@@ -1,7 +1,7 @@
 ﻿import uuid
-from typing import Optional, List
+from typing import Optional
 from datetime import datetime
-from pydantic import BaseModel, EmailStr, Field, validator, constr
+from pydantic import BaseModel, EmailStr, constr
 
 class UserBase(BaseModel):
     full_name: str
@@ -21,7 +21,7 @@ class UserProfile(BaseModel):
     referral_code: Optional[str] = None
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class User(UserBase):
     id: uuid.UUID
@@ -30,7 +30,7 @@ class User(UserBase):
     profile: Optional[UserProfile] = None
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class Token(BaseModel):
     access_token: str
@@ -46,3 +46,4 @@ class LoginAttemptCreate(BaseModel):
 class ReferralInfo(BaseModel):
     referral_code: str
     referred_users_count: int = 0
+

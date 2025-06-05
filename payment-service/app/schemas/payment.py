@@ -4,7 +4,7 @@ from datetime import datetime
 from pydantic import BaseModel, Field, validator, condecimal
 
 class PaymentBase(BaseModel):
-    amount: condecimal(max_digits=10, decimal_places=2)  # type: ignore
+    amount: condecimal(max_digits=10, decimal_places=2)
     upi_id: str
     
 class PaymentCreate(PaymentBase):
@@ -21,26 +21,26 @@ class PaymentResponse(PaymentBase):
     payment_method: Optional[str] = None
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class PaymentStatusResponse(BaseModel):
     id: uuid.UUID
     status: str
-    amount: condecimal(max_digits=10, decimal_places=2)  # type: ignore
+    amount: condecimal(max_digits=10, decimal_places=2)
     upi_id: str
     created_at: datetime
     updated_at: datetime
     payment_gateway_txn_id: Optional[str] = None
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class PaymentHistoryItem(PaymentStatusResponse):
     payment_method: Optional[str] = None
     credit_card_last4: str
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class SettlementBase(BaseModel):
     transaction_id: uuid.UUID
@@ -56,7 +56,7 @@ class SettlementResponse(SettlementBase):
     settlement_reference: Optional[str] = None
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class FailedTransactionResponse(BaseModel):
     id: uuid.UUID
@@ -68,12 +68,13 @@ class FailedTransactionResponse(BaseModel):
     refund_status: Optional[str] = None
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class PaymentWebhookEvent(BaseModel):
     event_type: str
     transaction_id: uuid.UUID
     payment_gateway_txn_id: str
     status: str
-    amount: condecimal(max_digits=10, decimal_places=2)  # type: ignore
+    amount: condecimal(max_digits=10, decimal_places=2)
     gateway_response: Dict[str, Any]
+

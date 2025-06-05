@@ -26,7 +26,7 @@ class AdminUser(AdminUserBase):
     last_login: Optional[datetime] = None
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class AdminLogin(BaseModel):
     email: EmailStr
@@ -71,7 +71,7 @@ class AuditLog(AuditLogBase):
     created_at: datetime
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class NotificationBase(BaseModel):
     type: str  # Email/SMS/In-App
@@ -96,7 +96,7 @@ class Notification(NotificationBase):
     is_read: bool
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class EmailTemplateBase(BaseModel):
     template_name: str
@@ -118,4 +118,4 @@ class EmailTemplate(EmailTemplateBase):
     updated_at: datetime
     
     class Config:
-        orm_mode = True
+        from_attributes = True

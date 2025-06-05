@@ -1,38 +1,18 @@
-﻿version: '3.8'
-
-services:
+﻿services:
   api:
     build: .
     ports:
-      - "8003:8003"
+      - "8000:8000"
+    env_file:
+      - .env
     environment:
-      - DATABASE_URL=postgresql://postgres:password@db:5432/payment_service
+      - DATABASE_URL=postgresql://postgres:password1234@host.docker.internal:5432/payment_service
+      - REDIS_URL=redis://localhost:6379/0
       - AWS_REGION=us-east-1
-      - RAZORPAY_KEY_ID=your_razorpay_key_id
-      - RAZORPAY_KEY_SECRET=your_razorpay_key_secret
-      - JWT_SECRET_KEY=your_development_jwt_secret
-    depends_on:
-      - db
     volumes:
       - .:/app
     networks:
       - app-network
 
-  db:
-    image: postgres:15
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=payment_service
-    ports:
-      - "5435:5432"
-    networks:
-      - app-network
-
 networks:
   app-network:
-
-volumes:
-  postgres_data:

@@ -1,10 +1,9 @@
 from app.utils.caching import cache_result, invalidate_cache
 import uuid
-from typing import Optional, List, Dict, Any
-from datetime import datetime
-from sqlalchemy import select, update, and_
+from typing import Optional, List
+from datetime import datetime, timedelta
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
 from fastapi import HTTPException, status
 from jose import jwt
 
@@ -20,9 +19,6 @@ class AdminService:
         self.audit_service = AuditService(db)
     
     async def authenticate_admin(self, email: str, password: str) -> Token:
-        """
-        Authenticate admin user and return JWT token
-        """
         query = select(AdminUser).where(AdminUser.email == email)
         result = await self.db.execute(query)
         admin = result.scalars().first()
@@ -33,11 +29,9 @@ class AdminService:
         if not admin.is_active:
             raise ValueError("Admin account is inactive")
         
-        # Update last login
         admin.last_login = datetime.utcnow()
         await self.db.commit()
         
-        # Create access token
         token_data = {
             "sub": str(admin.id),
             "email": admin.email,
@@ -47,7 +41,6 @@ class AdminService:
         }
         access_token = jwt.encode(token_data, settings.JWT_SECRET_KEY, algorithm="HS256")
         
-        # Log login
         await self.audit_service.create_audit_log(
             action_type="Admin_Login",
             description=f"Admin login: {admin.email}",
@@ -58,16 +51,11 @@ class AdminService:
         return Token(access_token=access_token, token_type="bearer")
     
     async def create_admin_user(self, admin_data: AdminUserCreate) -> AdminUser:
-        """
-        Create a new admin user
-        """
-        # Check if email already exists
         query = select(AdminUser).where(AdminUser.email == admin_data.email)
         result = await self.db.execute(query)
         if result.scalars().first():
             raise ValueError(f"Admin with email {admin_data.email} already exists")
         
-        # Create admin user
         hashed_password = get_password_hash(admin_data.password)
         admin = AdminUser(
             admin_name=admin_data.admin_name,
@@ -79,9 +67,9 @@ class AdminService:
         
         self.db.add(admin)
         await self.db.commit()
-        await self.db.refresh(admin)`n        # After creating admin, invalidate cache for admin list`n        invalidate_cache("app.services.admin_service.AdminService.list_admin_users")`n        # After creating admin, invalidate cache for admin list`n        invalidate_cache("app.services.admin_service.AdminService.list_admin_users")
-        
-        # Log creation
+        await self.db.refresh(admin)
+
+        invalidate_cache("app.services.admin_service.AdminService.list_admin_users")
         await self.audit_service.create_audit_log(
             action_type="Admin_Created",
             description=f"Admin user created: {admin.email} with role {admin.role}",
@@ -91,30 +79,18 @@ class AdminService:
         
         return admin
     
-    @cache_result(ttl_seconds=600)  # Cache for 10 minutes`n    @cache_result(ttl_seconds=600)  # Cache for 10 minutes`n    async def list_admin_users(self) -> List[AdminUser]:
-        """
-        List all admin users
-        """
+    @cache_result(ttl_seconds=600)  # Cache for 10 minutes
+    async def list_admin_users(self) -> List[AdminUser]:
         query = select(AdminUser)
         result = await self.db.execute(query)
         return result.scalars().all()
     
     async def get_admin_by_id(self, admin_id: uuid.UUID) -> Optional[AdminUser]:
-        """
-        Get admin by ID
-        """
         query = select(AdminUser).where(AdminUser.id == admin_id)
         result = await self.db.execute(query)
         return result.scalars().first()
     
     async def block_user(self, user_id: uuid.UUID, admin_id: uuid.UUID, reason: str) -> None:
-        """
-        Block a user (by setting is_active to False in User service)
-        This is a placeholder implementation - in reality, this would call User service API
-        """
-        # In a real implementation, make an API call to User service to block the user
-        # For this demo, we'll just log the action
-        
         await self.audit_service.create_audit_log(
             action_type="User_Blocked",
             description=f"User {user_id} blocked",
@@ -123,16 +99,8 @@ class AdminService:
             details={"reason": reason}
         )
         
-        # Also send a notification to the user
-        # This would be implemented in a real system
-        
-    @cache_result(ttl_seconds=300)  # Cache for 5 minutes`n    @cache_result(ttl_seconds=300)  # Cache for 5 minutes`n    async def get_dashboard_metrics(self) -> DashboardMetrics:
-        """
-        Get metrics for admin dashboard
-        This is a placeholder implementation with mock data
-        In a real application, this would query various services
-        """
-        # Mock data for demonstration
+    @cache_result(ttl_seconds=300)  # Cache for 5 minutes
+    async def get_dashboard_metrics(self) -> DashboardMetrics:
         return DashboardMetrics(
             total_users=1250,
             active_users=980,
@@ -157,5 +125,3 @@ class AdminService:
             pending_kyc=45,
             success_rate=92.5
         )
-
-

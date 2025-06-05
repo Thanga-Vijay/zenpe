@@ -34,7 +34,7 @@ class KycDocument(Base):
     kyc_id = Column(UUID(as_uuid=True), ForeignKey("kyc_requests.id", ondelete="CASCADE"), index=True)
     doc_type = Column(String(50))  # Aadhaar/PAN/etc.
     doc_url = Column(Text, nullable=False)
-    doc_metadata = Column(JSONB, default={})
+    document_metadata = Column(JSONB, default={})
     uploaded_at = Column(DateTime, default=datetime.utcnow)
     
     # Relationships

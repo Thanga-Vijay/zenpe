@@ -17,7 +17,7 @@ class DocumentResponse(DocumentBase):
     uploaded_at: datetime
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class KycRequestBase(BaseModel):
     user_id: uuid.UUID
@@ -38,7 +38,7 @@ class KycRequestResponse(KycRequestBase):
     documents: List[DocumentResponse] = []
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class KycStatusResponse(BaseModel):
     status: str
@@ -47,7 +47,7 @@ class KycStatusResponse(BaseModel):
     rejection_reason: Optional[str] = None
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class KycAuditLogBase(BaseModel):
     kyc_id: uuid.UUID
@@ -64,12 +64,11 @@ class KycAuditLogResponse(KycAuditLogBase):
     timestamp: datetime
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class AdminVerifyRequest(BaseModel):
     status: str  # Approved/Rejected
     remarks: Optional[str] = None
-
 
 class DocumentVerificationChecklist(BaseModel):
     document_quality: bool = False  # Image is clear and readable
@@ -84,3 +83,4 @@ class VerificationDetail(BaseModel):
     verification_ip: str
     checklist: DocumentVerificationChecklist
     access_location: str
+
